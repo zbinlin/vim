@@ -1,0 +1,6 @@
+/runtime/
+/doc/tags
+
+# logs 目录
+!/vimfiles/logs/.gitignore
+/vimfiles/logs/
