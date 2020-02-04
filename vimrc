@@ -443,8 +443,8 @@ let g:indent_guides_guide_size = 1
 
 " load closetag.vim
 if has("autocmd")
-    autocmd FileType html,javascript,typescript.tsx let b:unaryTagsStack = "area base br col command embed hr img input keygen link meta param source track wbr"
-    autocmd FileType html,javascript,typescript.tsx,xml,xsl so $VIM/vimfiles/scripts/closetag.vim
+    autocmd FileType html,javascript,typescript.tsx,javascriptreact,typescriptreact let b:unaryTagsStack = "area base br col command embed hr img input keygen link meta param source track wbr"
+    autocmd FileType html,javascript,typescript.tsx,javascriptreact,typescriptreact,xml,xsl so $VIM/vimfiles/scripts/closetag.vim
 endif
 
 
@@ -619,7 +619,7 @@ if executable('typescript-language-server')
         \ 'name': 'ls-javascript',
         \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
         \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'jsconfig.json'))},
-        \ 'whitelist': ['javascript', 'javascript.jsx'],
+        \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact'],
         \ })
 
     au User lsp_setup call lsp#register_server({
@@ -644,7 +644,7 @@ nnoremap <silent> <S-F3> :LspPreviousReference<CR>
 nnoremap <silent> <F2> :LspRename<CR>
 
 if has("autocmd")
-    autocmd FileType javascript,javascript.jsx,typescript,typescript.tsx,typescriptreact setlocal omnifunc=lsp#complete
+    autocmd FileType javascript,javascript.jsx,javascriptreact,typescript,typescript.tsx,typescriptreact setlocal omnifunc=lsp#complete
     autocmd FileType rust setlocal omnifunc=lsp#complete
 endif
 
