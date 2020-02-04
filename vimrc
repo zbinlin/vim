@@ -626,7 +626,7 @@ if executable('typescript-language-server')
         \ 'name': 'ls-typescript',
         \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
         \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-        \ 'whitelist': ['typescript', 'typescript.tsx'],
+        \ 'whitelist': ['typescript', 'typescript.tsx', 'typescriptreact'],
         \ })
 
     au User lsp_setup call lsp#register_server({
@@ -644,7 +644,7 @@ nnoremap <silent> <S-F3> :LspPreviousReference<CR>
 nnoremap <silent> <F2> :LspRename<CR>
 
 if has("autocmd")
-    autocmd FileType javascript,javascript.jsx,typescript,typescript.tsx setlocal omnifunc=lsp#complete
+    autocmd FileType javascript,javascript.jsx,typescript,typescript.tsx,typescriptreact setlocal omnifunc=lsp#complete
     autocmd FileType rust setlocal omnifunc=lsp#complete
 endif
 
