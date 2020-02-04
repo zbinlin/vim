@@ -61,9 +61,6 @@
 [submodule "vimfiles/bundle/45-vim-repeat"]
 	path = vimfiles/bundle/45-vim-repeat
 	url = https://github.com/tpope/vim-repeat.git
-[submodule "vimfiles/bundle/45-vim-styled-components"]
-	path = vimfiles/bundle/45-vim-styled-components
-	url = https://github.com/styled-components/vim-styled-components.git
 [submodule "vimfiles/bundle/45-vim-surround"]
 	path = vimfiles/bundle/45-vim-surround
 	url = https://github.com/tpope/vim-surround.git
