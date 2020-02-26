@@ -618,29 +618,6 @@ set pumwidth=15
 set pumheight=20
 
 
-if executable('typescript-language-server')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'ls-javascript',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'jsconfig.json'))},
-        \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact'],
-        \ })
-
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'ls-typescript',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-        \ 'whitelist': ['typescript', 'typescript.tsx', 'typescriptreact'],
-        \ })
-
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'ls-rust',
-        \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
-        \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
-        \ 'whitelist': ['rust'],
-        \ })
-endif
-
 nnoremap <silent> K :LspHover<CR>
 nnoremap <silent> <C-]> :LspDefinition<CR>
 nnoremap <silent> <F3> :LspNextReference<CR>
