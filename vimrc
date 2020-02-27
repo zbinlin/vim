@@ -624,11 +624,6 @@ nnoremap <silent> <F3> :LspNextReference<CR>
 nnoremap <silent> <S-F3> :LspPreviousReference<CR>
 nnoremap <silent> <F2> :LspRename<CR>
 
-if has("autocmd")
-    autocmd FileType javascript,javascript.jsx,javascriptreact,typescript,typescript.tsx,typescriptreact setlocal omnifunc=lsp#complete
-    autocmd FileType rust setlocal omnifunc=lsp#complete
-endif
-
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_preview_doubletap = 0
 let g:lsp_fold_enabled = 0

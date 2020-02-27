@@ -6,6 +6,8 @@ if executable('html-languageserver')
     \ })
 else
     echohl ErrorMsg
-    echom 'Sorry, `typescript-language-server` is not installed. Uses `npm install --global vscode-html-languageserver-bin` to install.'
+    echom 'Sorry, `vscode-html-languageserver-bin` is not installed. Uses `npm install --global vscode-html-languageserver-bin` to install.'
     echohl NONE
 endif
+
+autocmd FileType html setlocal omnifunc=lsp#complete

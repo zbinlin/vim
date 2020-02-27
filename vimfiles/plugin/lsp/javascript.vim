@@ -10,3 +10,5 @@ else
     echom 'Sorry, `typescript-language-server` is not installed. Uses `npm install -g typescript typescript-language-server` to install.'
     echohl NONE
 endif
+
+autocmd FileType javascript,javascript.jsx,javascriptreact setlocal omnifunc=lsp#complete

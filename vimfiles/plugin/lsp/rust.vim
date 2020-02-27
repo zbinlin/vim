@@ -7,6 +7,8 @@ if executable('rls')
         \ })
 else
     echohl ErrorMsg
-    echom 'Sorry, `typescript-language-server` is not installed. Uses `rustup update && rustup component add rls rust-analysis rust-src` to install.'
+    echom 'Sorry, `rls` is not installed. Uses `rustup update && rustup component add rls rust-analysis rust-src` to install.'
     echohl NONE
 endif
+
+autocmd FileType rust setlocal omnifunc=lsp#complete
