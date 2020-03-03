@@ -46,8 +46,8 @@ hi CursorLineNr  gui=NONE        guifg=#999999       guibg=#2f4848
 
 " Popup Menu
 hi Pmenu         gui=NONE        guifg=#c0c0c0       guibg=#107070
-hi PmenuSbar     gui=NONE        guifg=#000000       guibg=#c06800
-hi PmenuThumb    gui=NONE        guifg=#000000       guibg=#107070
+hi PmenuSbar     gui=NONE        guifg=#000000       guibg=#006565
+hi PmenuThumb    gui=NONE        guifg=#000000       guibg=#277f7f
 hi PmenuSel      gui=NONE        guifg=#ffffff       guibg=#c06800
 
 hi MatchParen    gui=NONE        guifg=#000000       guibg=#96D9EA
