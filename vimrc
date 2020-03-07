@@ -624,15 +624,19 @@ nnoremap <silent> <F3> :LspNextReference<CR>
 nnoremap <silent> <S-F3> :LspPreviousReference<CR>
 nnoremap <silent> <F2> :LspRename<CR>
 
+let g:lsp_signs_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_diagnostics_echo_delay = 200
+let g:lsp_diagnostics_float_cursor = 0
+let g:lsp_diagnostics_float_delay = 2000
 let g:lsp_preview_doubletap = 0
-let g:lsp_fold_enabled = 0
+let g:lsp_fold_enabled = 1
 let g:lsp_preview_autoclose = 0
 let g:lsp_highlight_references_enabled = 1
 
 " Close preview window with <esc>
-autocmd User lsp_float_opened nmap <buffer> <silent> <Esc> <Plug>(lsp-preview-close)
-autocmd User lsp_float_closed nunmap <buffer> <Esc>
+autocmd User lsp_float_opened nmap <buffer> <silent> <esc> <Plug>(lsp-preview-close)
+autocmd User lsp_float_closed silent! nunmap <buffer> <esc>
 
 
 let g:typescript_indent_disable = 1
