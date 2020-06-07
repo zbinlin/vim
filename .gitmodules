@@ -79,3 +79,6 @@
 [submodule "vimfiles/bundle/50-vim-javascript"]
 	path = vimfiles/bundle/50-vim-javascript
 	url = https://github.com/pangloss/vim-javascript.git
+[submodule "vimfiles/bundle/45-vim-abolish"]
+	path = vimfiles/bundle/45-vim-abolish
+	url = https://github.com/tpope/vim-abolish.git
