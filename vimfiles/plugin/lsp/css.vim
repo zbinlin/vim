@@ -1,13 +1,19 @@
 if executable('css-languageserver')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'ls-css',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'css-languageserver --stdio']},
-        \ 'whitelist': ['css', 'less', 'sass'],
-    \ })
+    augroup LspCss
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+        \   'name': 'ls-css',
+        \   'cmd': {
+        \       server_info->[&shell, &shellcmdflag, 'css-languageserver --stdio']
+        \   },
+        \   'allowlist': ['css', 'less', 'sass'],
+        \   'blocklist': [],
+        \ })
+
+        autocmd FileType css,less,sass setlocal omnifunc=lsp#complete
+    augroup end
 else
     echohl ErrorMsg
-    echom 'Sorry, `vscode-css-languageserver-bin` is not installed. Uses `npm install --global vscode-css-languageserver-bin` to install.'
+    echom 'Sorry, `vscode-css-languageserver-bin` is not installed. Please uses `npm install --global vscode-css-languageserver-bin` to install.'
     echohl NONE
 endif
-
-autocmd FileType css,less,sass setlocal omnifunc=lsp#complete
