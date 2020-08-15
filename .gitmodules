@@ -82,3 +82,6 @@
 [submodule "vimfiles/bundle/45-vim-abolish"]
 	path = vimfiles/bundle/45-vim-abolish
 	url = https://github.com/tpope/vim-abolish.git
+[submodule "vimfiles/bundle/45-vim-jsonc"]
+	path = vimfiles/bundle/45-vim-jsonc
+	url = https://github.com/kevinoid/vim-jsonc.git
