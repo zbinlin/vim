@@ -8,6 +8,15 @@ if executable('html-languageserver')
         \   },
         \   'allowlist': ['html'],
         \   'blocklist': [],
+        \   'initialization_options': {
+        \       'embeddedLanguages': {
+        \           'css': v:true,
+        \           'javascript': v:true,
+        \       },
+        \   },
+        \   'config': {},
+        \   'workspace_config': {},
+        \   'semantic_highlight': {},
         \ })
 
         autocmd FileType html setlocal omnifunc=lsp#complete

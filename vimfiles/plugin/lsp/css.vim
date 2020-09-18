@@ -8,6 +8,30 @@ if executable('css-languageserver')
         \   },
         \   'allowlist': ['css', 'less', 'sass'],
         \   'blocklist': [],
+        \   'config': {},
+        \   'workspace_config': {
+        \       'css': {
+        \           'lint': {
+        \               'validProperties': [],
+        \           },
+        \       },
+        \       'less': {
+        \           'lint': {
+        \               'validProperties': [],
+        \           },
+        \       },
+        \       'sass': {
+        \           'lint': {
+        \               'validProperties': [],
+        \           },
+        \       },
+        \       'scss': {
+        \           'lint': {
+        \               'validProperties': [],
+        \           },
+        \       },
+        \   },
+        \   'semantic_highlight': {},
         \ })
 
         autocmd FileType css,less,sass setlocal omnifunc=lsp#complete
