@@ -9,7 +9,7 @@ if executable('vscode-json-languageserver')
         \   'initialization_options': {
         \       'provideFormatter': v:false,
         \   },
-        \   'allowlist': ['json'],
+        \   'allowlist': ['json', 'jsonc'],
         \   'blocklist': [],
         \   'config': {},
         \   'workspace_config': {

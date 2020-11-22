@@ -12,6 +12,6 @@ if executable('pyls')
     augroup end
 else
     echohl ErrorMsg
-    echom 'Sorry, `python-language-server` is not installed. Please Uses `pip install python-language-server` to install.'
+    echom 'Sorry, `python-language-server` is not installed. Please Uses `pip install --user python-language-server` to install.'
     echohl NONE
 endif
