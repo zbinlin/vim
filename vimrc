@@ -630,7 +630,7 @@ let g:lsp_diagnostics_echo_delay = 200
 let g:lsp_diagnostics_float_cursor = 0
 let g:lsp_diagnostics_float_delay = 2000
 let g:lsp_preview_doubletap = 0
-let g:lsp_fold_enabled = 1
+let g:lsp_fold_enabled = 0
 let g:lsp_preview_autoclose = 0
 let g:lsp_highlight_references_enabled = 1
 
