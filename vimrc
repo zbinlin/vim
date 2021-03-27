@@ -633,6 +633,7 @@ let g:lsp_preview_doubletap = 0
 let g:lsp_fold_enabled = 0
 let g:lsp_preview_autoclose = 0
 let g:lsp_highlight_references_enabled = 1
+let g:lsp_document_code_action_signs_enabled = 0
 
 " Close preview window with <esc>
 autocmd User lsp_float_opened nmap <buffer> <silent> <esc> <Plug>(lsp-preview-close)
