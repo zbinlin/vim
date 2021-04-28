@@ -34,10 +34,6 @@ else
         let g:isGUI = 0
         " 针对 Fcitx 在终端下出现延时
         set ttimeoutlen=100
-        " Xterm 256 Color
-        if $TERM == 'xfce4-terminal' || $TERM == 'xterm' || $TERM =~? '256color'
-           set t_Co=256
-        endif
     endif
 endif
 
@@ -93,8 +89,12 @@ set sessionoptions+=unix,slash
 
 
 set background=dark
-if has("gui_running") || has("termguicolors")
-    if has("termguicolors")
+" Xterm 256 Color
+if &term == 'xfce4-terminal' || &term == 'xterm' || &term =~? '256color'
+    set t_Co=256
+endif
+if has("gui_running") || (has("termguicolors") && &term !~# '^screen')
+    if has("termguicolors") && &term !~# '^screen'
         set termguicolors
     endif
     colors fengli
