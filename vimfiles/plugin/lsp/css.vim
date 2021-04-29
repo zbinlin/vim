@@ -37,7 +37,10 @@ if executable('css-languageserver')
         autocmd FileType css,less,sass setlocal omnifunc=lsp#complete
     augroup end
 else
-    echohl ErrorMsg
-    echom 'Sorry, `vscode-css-languageserver-bin` is not installed. Please uses `npm install --global vscode-css-languageserver-bin` to install.'
-    echohl NONE
+    function! s:echo(msg)
+        echohl WarningMsg
+        echom a:msg
+        echohl NONE
+    endfunction
+    autocmd FileType css,less,sass call s:echo('Sorry, `vscode-css-languageserver-bin` is not installed. Please uses `npm install --global vscode-css-languageserver-bin` to install.')
 endif

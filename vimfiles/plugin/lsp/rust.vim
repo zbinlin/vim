@@ -18,7 +18,10 @@ if executable('rls')
         autocmd FileType rust setlocal omnifunc=lsp#complete
     augroup end
 else
-    echohl ErrorMsg
-    echom 'Sorry, `rls` is not installed. Please Uses `rustup update && rustup component add rls rust-analysis rust-src` to install.'
-    echohl NONE
+    function! s:echo(msg)
+        echohl WarningMsg
+        echom a:msg
+        echohl NONE
+    endfunction
+    autocmd FileType rust call s:echo('Sorry, `rls` is not installed. Please Uses `rustup update && rustup component add rls rust-analysis rust-src` to install.')
 endif

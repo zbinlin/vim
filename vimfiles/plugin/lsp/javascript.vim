@@ -16,7 +16,10 @@ if executable('typescript-language-server')
         autocmd FileType javascript,javascript.jsx,javascriptreact setlocal omnifunc=lsp#complete
     augroup end
 else
-    echohl ErrorMsg
-    echom 'Sorry, `typescript-language-server` is not installed. Please uses `npm install -g typescript typescript-language-server` to install.'
-    echohl NONE
+    function! s:echo(msg)
+        echohl WarningMsg
+        echom a:msg
+        echohl NONE
+    endfunction
+    autocmd FileType javascript,javascript.jsx,javascriptreact call s:echo('Sorry, `typescript-language-server` is not installed. Please uses `npm install -g typescript typescript-language-server` to install.')
 endif

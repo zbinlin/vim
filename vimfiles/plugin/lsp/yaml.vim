@@ -24,7 +24,10 @@ if executable('yaml-language-server')
         autocmd FileType yaml setlocal omnifunc=lsp#complete
     augroup end
 else
-    echohl ErrorMsg
-    echom 'Sorry, `yaml-language-server` is not installed. Please uses `npm install --global yaml-language-server` to install.'
-    echohl NONE
+    function! s:echo(msg)
+        echohl WarningMsg
+        echom a:msg
+        echohl NONE
+    endfunction
+    autocmd FileType yaml call s:echo('Sorry, `yaml-language-server` is not installed. Please uses `npm install --global yaml-language-server` to install.')
 endif

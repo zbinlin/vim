@@ -20,8 +20,12 @@ if executable('vscode-json-languageserver')
         \           'format': v:false,
         \           'schemas': [
         \               {
-        \                   'fileMatch': ['package.json', 'package-lock.json'],
+        \                   'fileMatch': ['package.json'],
         \                   'url': 'https://json.schemastore.org/package',
+        \               },
+        \               {
+        \                   'fileMatch': ['tsconfig.json'],
+        \                   'url': 'https://json.schemastore.org/tsconfig',
         \               },
         \           ],
         \       },
@@ -32,7 +36,10 @@ if executable('vscode-json-languageserver')
         autocmd FileType json setlocal omnifunc=lsp#complete
     augroup end
 else
-    echohl ErrorMsg
-    echom 'Sorry, `vscode-json-languageserver` is not installed. Please uses `npm install --global vscode-json-languageserver` to install.'
-    echohl NONE
+    function! s:echo(msg)
+        echohl WarningMsg
+        echom a:msg
+        echohl NONE
+    endfunction
+    autocmd FileType json call s:echo('Sorry, `vscode-json-languageserver` is not installed. Please uses `npm install --global vscode-json-languageserver` to install.')
 endif

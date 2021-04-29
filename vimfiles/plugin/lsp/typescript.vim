@@ -16,9 +16,12 @@ if executable('typescript-language-server')
         autocmd FileType typescript,typescript.tsx,typescriptreact setlocal omnifunc=lsp#complete
     augroup end
 else
-    echohl ErrorMsg
-    echom 'Sorry, `typescript-language-server` is not installed. Please uses `npm install -g typescript typescript-language-server` to install.'
-    echohl NONE
+    function! s:echo(msg)
+        echohl WarningMsg
+        echom a:msg
+        echohl NONE
+    endfunction
+    autocmd FileType typescript,typescript.tsx,typescriptreact call s:echo('Sorry, `typescript-language-server` is not installed. Please uses `npm install -g typescript typescript-language-server` to install.')
 endif
 
 "augroup lsp_folding

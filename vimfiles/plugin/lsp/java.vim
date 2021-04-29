@@ -46,7 +46,10 @@ if executable('java') && filereadable(s:jdtls_launcher_path)
         autocmd FileType java setlocal omnifunc=lsp#complete
     augroup end
 else
-    echohl ErrorMsg
-    echom 'Sorry, `java` or `eclipse.jdt.ls` is not installed, Please See https://github.com/prabirshrestha/vim-lsp/wiki/Servers-Java to install.'
-    echohl NONE
+    function! s:echo(msg)
+        echohl WarningMsg
+        echom a:msg
+        echohl NONE
+    endfunction
+    autocmd FileType java call s:echo('Sorry, `java` or `eclipse.jdt.ls` is not installed, Please See https://github.com/prabirshrestha/vim-lsp/wiki/Servers-Java to install.')
 endif
