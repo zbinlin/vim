@@ -669,3 +669,20 @@ smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-T
 let g:vsnip_filetypes = {}
 let g:vsnip_filetypes.javascriptreact = ['javascript']
 let g:vsnip_filetypes.typescriptreact = ['typescript']
+
+" Patch to abolish
+function! s:patch_abolish()
+    if exists("g:Abolish")
+        function! s:hyphenatedpascalcase(word)
+            return substitute(g:Abolish.titlecase(a:word), ' ', '-', 'g')
+        endfunction
+
+        call extend(g:Abolish, {
+            \ 'hyphenatedpascalcase': function('s:hyphenatedpascalcase')
+        \ }, 'keep')
+        call extend(g:Abolish.Coercions, {
+            \ 'h': g:Abolish.hyphenatedpascalcase
+        \ }, 'keep')
+    endif
+endfunction
+autocmd VimEnter * call s:patch_abolish()
