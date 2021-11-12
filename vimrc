@@ -616,6 +616,11 @@ inoremap <C-k> <C-R>=pumvisible() ? "\<lt>C-P>" : "\<lt>C-k>"<CR>
 "inoremap <Esc> <C-R>=pumvisible() ? "\<lt>C-E>" : "\<lt>Esc>"<CR>
 inoremap <CR> <C-R>=pumvisible() ? "\<lt>C-Y>" : "\<lt>CR>"<CR>
 
+" 移到前面的 { 后面，用在 js/ts 里 import 或 destructuring assignment
+"inoremap <C-b>{ <C-o>T{<Space>
+"inoremap <C-b>[ <C-o>T[<Space>
+"inoremap <C-b>( <C-o>T(<Space>
+inoremap <C-b> <C-R>=search("[{[(]", "bes", line(".")) > 0 ? "\<lt>Right> " : ""<CR>
 
 " set popup menu size
 set pumwidth=15
