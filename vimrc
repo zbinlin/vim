@@ -581,8 +581,8 @@ let g:bexec_filter_types = {
     \ "rust": "cargo run",
     \ "sh": "bash",
     \ }
-nmap <silent> <unique> <F1> :Bexec<CR>
-vmap <silent> <unique> <F1> :BexecVisual<CR>
+nmap <silent> <unique> <F1> <leader>bx
+vmap <silent> <unique> <F1> <leader>bx
 
 
 " set netrw
