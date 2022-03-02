@@ -1,4 +1,26 @@
-if executable('rls')
+if executable('rust-analyzer')
+    augroup LspRust
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+        \   'name': 'ls-rust',
+        \   'cmd': {
+        \       server_info->['rust-analyzer']
+        \   },
+        \   'allowlist': ['rust'],
+        \   'blocklist': [],
+        \   'initialization_options': {
+        \       'cargo': {
+        \           'loadOutDirsFromCheck': v:true,
+        \       },
+        \       'procMacro': {
+        \           'enable': v:true,
+        \       },
+        \   },
+        \ })
+
+        autocmd FileType rust setlocal omnifunc=lsp#complete
+    augroup end
+elseif executable('rls')
     augroup LspRust
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
@@ -23,5 +45,5 @@ else
         echom a:msg
         echohl NONE
     endfunction
-    autocmd FileType rust call s:echo('Sorry, `rls` is not installed. Please Uses `rustup update && rustup component add rls rust-analysis rust-src` to install.')
+    autocmd FileType rust call s:echo('Sorry, `rls` or `rust-analyzer` is not installed. Please Uses `rustup update && rustup component add rls rust-analysis rust-src` or `sudo pacman -Sy rust-analyzer && rustup update && rustup component add rust-src` to install.')
 endif
