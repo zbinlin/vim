@@ -63,19 +63,18 @@ filetype plugin indent on
 
 
 if has("linux")
-    if !exists("$XDG_CACHE_HOME")
-        let $XDG_CACHE_HOME = expand("$HOME/.cache")
-    endif
     " Before to do
     " mkdir -p "${XDG_CACHE_HOME}/vim/{view,undo,swap,backup}"
     if !exists("$XDG_CACHE_HOME")
         let $XDG_CACHE_HOME = expand("$HOME/.cache")
     endif
-    set viewdir=$XDG_CACHE_HOME/vim/view
-    set undodir=$XDG_CACHE_HOME/vim/undo
-    set directory=$XDG_CACHE_HOME/vim/swap
-    set backupdir=$XDG_CACHE_HOME/vim/backup
-    set viminfo+='1000,n$XDG_CACHE_HOME/vim/viminfo
+    let $__DIR_NAME__ = has("nvim") ? "nvim" : "vim"
+    set viewdir=$XDG_CACHE_HOME/$__DIR_NAME__/view
+    set undodir=$XDG_CACHE_HOME/$__DIR_NAME__/undo
+    set directory=$XDG_CACHE_HOME/$__DIR_NAME__/swap
+    set backupdir=$XDG_CACHE_HOME/$__DIR_NAME__/backup
+    set viminfo+='1000,n$XDG_CACHE_HOME/$__DIR_NAME__/viminfo
+    unlet $__DIR_NAME__
 else
     set viewdir=$VIM/logs/view
     set undodir=$VIM/logs/undo
@@ -414,10 +413,6 @@ endfunction
 if has("autocmd")
     autocmd BufWinLeave * call RestoreHexmode()
 endif
-
-
-" 加密方式
-set cryptmethod=blowfish2
 
 
 " 复制高亮行到新建文件
