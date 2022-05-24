@@ -64,17 +64,17 @@ filetype plugin indent on
 
 if has("linux")
     " Before to do
-    " mkdir -p "${XDG_CACHE_HOME}/vim/{view,undo,swap,backup}"
+    " mkdir -p ${XDG_CACHE_HOME}/{vim,nvim}/{view,undo,swap,backup}
     if !exists("$XDG_CACHE_HOME")
         let $XDG_CACHE_HOME = expand("$HOME/.cache")
     endif
-    let $__DIR_NAME__ = has("nvim") ? "nvim" : "vim"
-    set viewdir=$XDG_CACHE_HOME/$__DIR_NAME__/view
-    set undodir=$XDG_CACHE_HOME/$__DIR_NAME__/undo
-    set directory=$XDG_CACHE_HOME/$__DIR_NAME__/swap
-    set backupdir=$XDG_CACHE_HOME/$__DIR_NAME__/backup
-    set viminfo+='1000,n$XDG_CACHE_HOME/$__DIR_NAME__/viminfo
-    unlet $__DIR_NAME__
+    let __DIR_NAME__ = $XDG_CACHE_HOME .. (has("nvim") ? "/nvim" : "/vim")
+    let &viewdir = __DIR_NAME__ .. "/view"
+    let &undodir = __DIR_NAME__ .. "/undo"
+    let &directory = __DIR_NAME__ .. "/swap"
+    let &backupdir = __DIR_NAME__ .. "/backup"
+    exec "set viminfo+='1000,n" .. __DIR_NAME__ .. "/viminfo"
+    unlet __DIR_NAME__
 else
     set viewdir=$VIM/logs/view
     set undodir=$VIM/logs/undo
