@@ -91,3 +91,6 @@
 [submodule "vimfiles/bundle/45-vim-vsnip-integ"]
 	path = vimfiles/bundle/45-vim-vsnip-integ
 	url = https://github.com/hrsh7th/vim-vsnip-integ.git
+[submodule "vimfiles/bundle/45-vimwiki"]
+	path = vimfiles/bundle/45-vimwiki
+	url = https://github.com/vimwiki/vimwiki.git

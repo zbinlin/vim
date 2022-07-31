@@ -686,3 +686,11 @@ function! s:patch_abolish()
     endif
 endfunction
 autocmd VimEnter * call s:patch_abolish()
+
+
+" vimwiki
+let g:vimwiki_list = [{
+    \ 'path': '~/Downloads/vimwiki/',
+    \ 'syntax': 'markdown',
+    \ 'ext': '.md',
+\}]
