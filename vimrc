@@ -690,7 +690,7 @@ autocmd VimEnter * call s:patch_abolish()
 
 " vimwiki
 let g:vimwiki_list = [{
-    \ 'path': '~/Downloads/vimwiki/',
+    \ 'path': '~/Documents/vimwiki/',
     \ 'syntax': 'markdown',
     \ 'ext': '.md',
 \}]
