@@ -689,6 +689,7 @@ autocmd VimEnter * call s:patch_abolish()
 
 
 " vimwiki
+let g:vimwiki_global_ext = 0
 let g:vimwiki_list = [{
     \ 'path': '~/Documents/vimwiki/',
     \ 'syntax': 'markdown',
