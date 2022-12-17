@@ -97,3 +97,6 @@
 [submodule "vimfiles/bundle/45-vim-wordmotion"]
 	path = vimfiles/bundle/45-vim-wordmotion
 	url = https://github.com/chaoren/vim-wordmotion.git
+[submodule "vimfiles/bundle/45-kotlin-vim"]
+	path = vimfiles/bundle/45-kotlin-vim
+	url = https://github.com/udalov/kotlin-vim.git
