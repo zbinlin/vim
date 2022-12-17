@@ -21,5 +21,5 @@ else
         echom a:msg
         echohl NONE
     endfunction
-    autocmd FileType sh call s:echo('Sorry, `kotlin-language-server` is not installed. Please see `https://github.com/prabirshrestha/vim-lsp/wiki/Servers-Kotlin`.')
+    autocmd FileType kotlin call s:echo('Sorry, `kotlin-language-server` is not installed. Please see `https://github.com/prabirshrestha/vim-lsp/wiki/Servers-Kotlin`.')
 endif
