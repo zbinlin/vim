@@ -667,10 +667,10 @@ function! s:patch_map()
     "smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
 
     " Jump forward or backward
-    imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-    smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-    imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-    smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+    exec 'imap <expr> <Tab>   vsnip#jumpable(1)  ? "<Plug>(vsnip-jump-next)" : "' .. (maparg('<Tab>', 'i') ?? '<Tab>') .. '"'
+    exec 'smap <expr> <Tab>   vsnip#jumpable(1)  ? "<Plug>(vsnip-jump-next)" : "' .. (maparg('<Tab>', 's') ?? '<Tab>') .. '"'
+    exec 'imap <expr> <S-Tab> vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "' .. (maparg('<S-Tab>', 'i') ?? '<S-Tab>') .. '"'
+    exec 'smap <expr> <S-Tab> vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "' .. (maparg('<S-Tab>', 's') ?? '<S-Tab>') .. '"'
 endfunction
 autocmd VimEnter * call s:patch_map()
 
