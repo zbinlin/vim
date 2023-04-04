@@ -552,7 +552,11 @@ let g:syntastic_filetype_map = {
     \ "typescriptreact": "typescript",
     \ }
 let g:syntastic_javascript_checkers = ["eslint"]
+let g:syntastic_javascript_eslint_exec = "/bin/ls"
+let g:syntastic_javascript_eslint_exe = "npx eslint"
 let g:syntastic_typescript_checkers = ["eslint"]
+let g:syntastic_typescript_eslint_exec = "/bin/ls"
+let g:syntastic_typescript_eslint_exe = "npx eslint"
 
 
 " set suffixesadd
@@ -624,6 +628,7 @@ set pumheight=20
 
 nnoremap <silent> K :LspHover<CR>
 nnoremap <silent> <C-]> :LspDefinition<CR>
+nnoremap <silent> <C-}> :LspDeclaration<CR>
 nnoremap <silent> <F3> :LspNextReference<CR>
 nnoremap <silent> <S-F3> :LspPreviousReference<CR>
 nnoremap <silent> <F2> :LspRename<CR>
@@ -650,20 +655,25 @@ let g:typescript_indent_disable = 1
 set nostartofline
 
 
-" vim-vsnip + vim-vsnip-integ plugins
-"" Expand
-"imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-"smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-"
-"" Expand or jump
-"imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-"smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+" Fix the key remap by after loaded script
+function! s:patch_map()
+    " vim-vsnip + vim-vsnip-integ plugins
+    "" Expand
+    "imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+    "smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+    "
+    "" Expand or jump
+    "imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+    "smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
 
-" Jump forward or backward
-imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+    " Jump forward or backward
+    imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+    smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+    imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+    smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+endfunction
+autocmd VimEnter * call s:patch_map()
+
 
 " If you want to use snippet for multiple filetypes, you can `g:vsip_filetypes` for it.
 let g:vsnip_filetypes = {}
