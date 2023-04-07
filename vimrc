@@ -537,27 +537,6 @@ if has("autocmd")
 endif
 
 
-" syntastic plugin
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-
-let g:syntastic_filetype_map = {
-    \ "javascriptreact": "javascript",
-    \ "typescriptreact": "typescript",
-    \ }
-let g:syntastic_javascript_checkers = ["eslint"]
-let g:syntastic_javascript_eslint_exec = "/bin/ls"
-let g:syntastic_javascript_eslint_exe = "npx eslint"
-let g:syntastic_typescript_checkers = ["eslint"]
-let g:syntastic_typescript_eslint_exec = "/bin/ls"
-let g:syntastic_typescript_eslint_exe = "npx eslint"
-
 
 " set suffixesadd
 "if has("autocmd")

@@ -31,9 +31,6 @@
 [submodule "vimfiles/bundle/45-supertab"]
 	path = vimfiles/bundle/45-supertab
 	url = https://github.com/ervandew/supertab.git
-[submodule "vimfiles/bundle/45-syntastic"]
-	path = vimfiles/bundle/45-syntastic
-	url = https://github.com/scrooloose/syntastic.git
 [submodule "vimfiles/bundle/45-tagbar"]
 	path = vimfiles/bundle/45-tagbar
 	url = https://github.com/majutsushi/tagbar
