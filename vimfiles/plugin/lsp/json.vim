@@ -33,7 +33,7 @@ if executable('vscode-json-languageserver')
         \   'semantic_highlight': {},
         \ })
 
-        autocmd FileType json setlocal omnifunc=lsp#complete
+        autocmd FileType json,jsonc setlocal omnifunc=lsp#complete
     augroup end
 else
     function! s:echo(msg)
@@ -41,5 +41,5 @@ else
         echom a:msg
         echohl NONE
     endfunction
-    autocmd FileType json call s:echo('Sorry, `vscode-json-languageserver` is not installed. Please uses `npm install --global vscode-json-languageserver` to install.')
+    autocmd FileType json,jsonc call s:echo('Sorry, `vscode-json-languageserver` is not installed. Please uses `npm install --global vscode-json-languageserver` to install.')
 endif

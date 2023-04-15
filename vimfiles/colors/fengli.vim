@@ -50,7 +50,7 @@ hi PmenuSbar     gui=NONE        guifg=#000000       guibg=#006565
 hi PmenuThumb    gui=NONE        guifg=#000000       guibg=#277f7f
 hi PmenuSel      gui=NONE        guifg=#ffffff       guibg=#c06800
 
-hi MatchParen    gui=NONE        guifg=#000000       guibg=#96D9EA
+hi MatchParen    gui=NONE        guifg=#ecee90       guibg=#857b6f
 hi SignColumn    gui=NONE        guifg=#00FFFF       guibg=#C0C0C0
 
 hi SpellBad      gui=UNDERCURL   guifg=NONE          guibg=NONE
@@ -59,6 +59,6 @@ hi SpellLocal    gui=UNDERCURL   guifg=NONE          guibg=NONE
 hi SpellRare     gui=UNDERCURL   guifg=NONE          guibg=NONE
 
 " Tab
-hi TabLine      gui=NONE         guifg=#707070       guibg=#c4c4c4
-hi TabLineFill  gui=NONE         guifg=#707070       guibg=#c4c4c4
-hi TabLineSel   gui=NONE         guifg=#999944       guibg=NONE
+hi TabLine       gui=NONE        guifg=#707070       guibg=#c4c4c4
+hi TabLineFill   gui=NONE        guifg=#707070       guibg=#c4c4c4
+hi TabLineSel    gui=NONE        guifg=#999944       guibg=NONE

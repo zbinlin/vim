@@ -11,6 +11,9 @@ if executable(expand('~/kotlin-language-server/bin/kotlin-language-server'))
         \   'config': {},
         \   'workspace_config': {},
         \   'semantic_highlight': {},
+        \   'root_uri':{
+        \       server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'gradlew'))
+        \   },
         \ })
 
         autocmd FileType kotlin setlocal omnifunc=lsp#complete

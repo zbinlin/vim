@@ -328,6 +328,7 @@ set backspace=indent,eol,start
 
 
 set number
+set signcolumn=number
 set cursorline
 
 
@@ -622,6 +623,7 @@ let g:lsp_fold_enabled = 0
 let g:lsp_preview_autoclose = 0
 let g:lsp_highlight_references_enabled = 1
 let g:lsp_document_code_action_signs_enabled = 0
+let g:lsp_diagnostics_virtual_text_enabled = 0
 
 " Close preview window with <esc>
 autocmd User lsp_float_opened nmap <buffer> <silent> <esc> <Plug>(lsp-preview-close)
@@ -634,22 +636,41 @@ let g:typescript_indent_disable = 1
 set nostartofline
 
 
+function! s:has_close_parenthesis(ch)
+    return getline('.')[col('.') - 1] == a:ch
+endfunction
+inoremap <expr> ) <SID>has_close_parenthesis(')') ? '<Right>' : ')'
+inoremap <expr> ] <SID>has_close_parenthesis(']') ? '<Right>' : ']'
+inoremap <expr> } <SID>has_close_parenthesis('}') ? '<Right>' : '}'
+inoremap <expr> > <SID>has_close_parenthesis('>') ? '<Right>' : '>'
+inoremap <expr> ' <SID>has_close_parenthesis("'") ? '<Right>' : "'"
+inoremap <expr> " <SID>has_close_parenthesis('"') ? '<Right>' : '"'
+inoremap <expr> ` <SID>has_close_parenthesis('`') ? '<Right>' : '`'
+
 " Fix the key remap by after loaded script
 function! s:patch_map()
     " vim-vsnip + vim-vsnip-integ plugins
     "" Expand
-    "imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-    "smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+    "imap <expr> <C-j> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>'
+    "smap <expr> <C-j> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>'
     "
     "" Expand or jump
-    "imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-    "smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+    imap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+    smap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
 
     " Jump forward or backward
-    exec 'imap <expr> <Tab>   vsnip#jumpable(1)  ? "<Plug>(vsnip-jump-next)" : "' .. (maparg('<Tab>', 'i') ?? '<Tab>') .. '"'
-    exec 'smap <expr> <Tab>   vsnip#jumpable(1)  ? "<Plug>(vsnip-jump-next)" : "' .. (maparg('<Tab>', 's') ?? '<Tab>') .. '"'
-    exec 'imap <expr> <S-Tab> vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "' .. (maparg('<S-Tab>', 'i') ?? '<S-Tab>') .. '"'
-    exec 'smap <expr> <S-Tab> vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "' .. (maparg('<S-Tab>', 's') ?? '<S-Tab>') .. '"'
+
+    if has("gui_running")
+        exec 'imap <expr> <C-Tab> vsnip#jumpable(1)  ? "<Plug>(vsnip-jump-next)" : "' .. (maparg('<C-Tab>', 'i') ?? '<Tab>') .. '"'
+        exec 'smap <expr> <C-Tab> vsnip#jumpable(1)  ? "<Plug>(vsnip-jump-next)" : "' .. (maparg('<C-Tab>', 's') ?? '<Tab>') .. '"'
+        exec 'imap <expr> <S-Tab> vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "' .. (maparg('<S-Tab>', 'i') ?? '<S-Tab>') .. '"'
+        exec 'smap <expr> <S-Tab> vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "' .. (maparg('<S-Tab>', 's') ?? '<S-Tab>') .. '"'
+    else
+        exec 'imap <expr> <Tab> vsnip#jumpable(1)  ? "<Plug>(vsnip-jump-next)" : "' .. (maparg('<Tab>', 'i') ?? '<Tab>') .. '"'
+        exec 'smap <expr> <Tab> vsnip#jumpable(1)  ? "<Plug>(vsnip-jump-next)" : "' .. (maparg('<Tab>', 's') ?? '<Tab>') .. '"'
+        exec 'imap <expr> <S-Tab> vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "' .. (maparg('<S-Tab>', 'i') ?? '<S-Tab>') .. '"'
+        exec 'smap <expr> <S-Tab> vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "' .. (maparg('<S-Tab>', 's') ?? '<S-Tab>') .. '"'
+    endif
 endfunction
 autocmd VimEnter * call s:patch_map()
 
