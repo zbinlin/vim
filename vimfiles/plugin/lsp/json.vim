@@ -30,7 +30,6 @@ if executable('vscode-json-languageserver')
         \           ],
         \       },
         \   },
-        \   'semantic_highlight': {},
         \ })
 
         autocmd FileType json,jsonc setlocal omnifunc=lsp#complete

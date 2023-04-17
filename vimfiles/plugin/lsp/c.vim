@@ -14,7 +14,6 @@ if executable('ccls')
         \   'blocklist': [],
         \   'config': {},
         \   'workspace_config': {},
-        \   'semantic_highlight': {},
         \ })
 
         autocmd FileType c,cpp,objc,objcpp,cc setlocal omnifunc=lsp#complete
@@ -31,7 +30,6 @@ elseif executable('clangd')
         \   'blocklist': [],
         \   'config': {},
         \   'workspace_config': {},
-        \   'semantic_highlight': {},
         \ })
 
         autocmd FileType c,cpp,objc,objcpp setlocal omnifunc=lsp#complete

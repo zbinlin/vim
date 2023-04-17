@@ -10,7 +10,6 @@ if executable('bash-language-server')
         \   'blocklist': [],
         \   'config': {},
         \   'workspace_config': {},
-        \   'semantic_highlight': {},
         \ })
 
         autocmd FileType sh setlocal omnifunc=lsp#complete

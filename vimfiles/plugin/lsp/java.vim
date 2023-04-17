@@ -34,13 +34,6 @@ if executable('java') && filereadable(s:jdtls_launcher_path)
         \   'root_uri': {
         \       server_info->lsp#utils#path_to_uri(s:get_root_path_by(server_info))
         \   },
-        \   'semantic_highlight': {
-        \       'entity.name.type.class.java': 'Identifier',
-        \       'entity.name.function.java': {
-        \           'meta.function-call.java': 'Label',
-        \           'meta.method.identifier.java': 'Identifier',
-        \       },
-        \   },
         \ })
 
         autocmd FileType java setlocal omnifunc=lsp#complete

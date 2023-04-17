@@ -16,7 +16,6 @@ if executable('html-languageserver')
         \   },
         \   'config': {},
         \   'workspace_config': {},
-        \   'semantic_highlight': {},
         \ })
 
         autocmd FileType html setlocal omnifunc=lsp#complete

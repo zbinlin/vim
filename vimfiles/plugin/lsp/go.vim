@@ -10,7 +10,6 @@ if executable('gopls')
         \   'blocklist': [],
         \   'config': {},
         \   'workspace_config': {},
-        \   'semantic_highlight': {},
         \ })
 
 		  autocmd BufWritePre *.go LspDocumentFormatSync

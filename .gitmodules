@@ -97,3 +97,6 @@
 [submodule "vimfiles/bundle/45-kotlin-vim"]
 	path = vimfiles/bundle/45-kotlin-vim
 	url = https://github.com/udalov/kotlin-vim.git
+[submodule "vimfiles/bundle/45-vim-prisma"]
+	path = vimfiles/bundle/45-vim-prisma
+	url = https://github.com/prisma/vim-prisma.git

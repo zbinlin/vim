@@ -31,7 +31,6 @@ if executable('css-languageserver')
         \           },
         \       },
         \   },
-        \   'semantic_highlight': {},
         \ })
 
         autocmd FileType css,less,sass setlocal omnifunc=lsp#complete
