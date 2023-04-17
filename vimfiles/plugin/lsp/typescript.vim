@@ -20,23 +20,42 @@ function! s:lsp_ui_workspace_execute_command(server_name, command_name, command_
     \    })
 endfunction
 
+function! s:has_commands_func(server_name, command_name) abort
+    let l:provider = 'executeCommandProvider'
+    let l:value = lsp#get_server_capabilities(a:server_name)
+    if !has_key(l:value, l:provider)
+        return v:false
+    endif
+    let l:value = l:value[l:provider]
+    if !has_key(l:value, 'commands')
+        return v:false
+    endif
+    let l:commands = l:value['commands']
+    return type(l:commands) == type([]) && index(l:commands, a:command_name) >= 0
+endfunction
+
+function! s:not_supported(what) abort
+    call lsp#log(a:what . ' not supported for ' . &filetype)
+endfunction
+
 function! s:lsp_go_to_source_definition() abort
     let l:method = 'executeCommand'
     let l:operation = substitute(l:method, '\u', ' \l\0', 'g')
 
     let l:command_name = '_typescript.goToSourceDefinition'
 
-    let l:capabilities_func = printf('lsp#capabilities#has_%s_provider(v:val)', substitute(l:operation, ' ', '_', 'g'))
+    "let l:capabilities_func = printf('lsp#capabilities#has_%s_provider(v:val)', substitute(l:operation, ' ', '_', 'g'))
     "let l:servers = filter(lsp#get_allowed_servers(), l:capabilities_func)
-    let l:servers = lsp#get_allowed_servers()
+    let l:servers = filter(lsp#get_allowed_servers(), 's:has_commands_func(v:val, l:command_name)')
     let l:command_id = lsp#_new_command()
 
+    let l:operation_name = printf('%s (%s)', l:operation, l:command_name)
 
     let l:ctx = { 'counter': len(l:servers), 'list':[], 'last_command_id': l:command_id, 'jump_if_one': 1, 'mods': '', 'in_preview': 0 }
-    "if len(l:servers) == 0
-    "    call s:not_supported('Retrieving ' . l:operation)
-    "    return
-    "endif
+    if len(l:servers) == 0
+        call s:not_supported('Retrieving ' . l:operation_name)
+        return
+    endif
 
     let l:command_args = [
     \        lsp#get_text_document_identifier()['uri'],
@@ -47,14 +66,13 @@ function! s:lsp_go_to_source_definition() abort
         call s:lsp_ui_workspace_execute_command(l:server, l:command_name, l:command_args, function('s:handle_callback'), l:ctx)
     endfor
 
-    echo printf('Retrieving %s ...', l:operation)
+    echo printf('Retrieving %s ...', l:operation_name)
 endfunction
 
 function! s:handle_callback(ctx, data) abort
     if a:ctx['last_command_id'] != lsp#_last_command()
         return
     endif
-    echom a:data
 
     let l:server = a:ctx['server_name']
     let l:type = 'workspace/executeCommand(' . a:ctx['command_name'] . ')'
