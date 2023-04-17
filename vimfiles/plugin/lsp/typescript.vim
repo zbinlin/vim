@@ -138,7 +138,7 @@ if executable('typescript-language-server')
         \ })
 
         autocmd FileType typescript,typescript.tsx,typescriptreact setlocal omnifunc=lsp#complete
-        nmap <expr> <A-]> <SID>lsp_go_to_source_definition()
+        nmap <A-]> :call <SID>lsp_go_to_source_definition()<CR>
     augroup end
 else
     function! s:echo(msg)
