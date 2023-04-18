@@ -8,7 +8,7 @@ if executable('java') && filereadable(s:jdtls_launcher_path)
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
         \   'name': 'ls-java',
-        \   'cmd': {server_info->[
+        \   'cmd': {server_info -> [
         \       'java',
         \       '-Declipse.application=org.eclipse.jdt.ls.core.id1',
         \       '-Dosgi.bundles.defaultStartLevel=4',
@@ -31,8 +31,8 @@ if executable('java') && filereadable(s:jdtls_launcher_path)
         \   ]},
         \   'allowlist': ['java'],
         \   'blocklist': [],
-        \   'root_uri': {
-        \       server_info->lsp#utils#path_to_uri(s:get_root_path_by(server_info))
+        \   'root_uri': {server_info ->
+        \       lsp#utils#path_to_uri(s:get_root_path_by(server_info))
         \   },
         \ })
 

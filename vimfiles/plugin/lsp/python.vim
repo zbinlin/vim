@@ -1,9 +1,10 @@
-if executable('pyls')
+let s:cmd = 'pyls'
+if executable(s:cmd)
     augroup LspPython
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
         \   'name': 'ls-py',
-        \   'cmd': {server_info->['pyls']},
+        \   'cmd': {server_info -> [&shell, &shellcmdflag, s:cmd]},
         \   'allowlist': ['python'],
         \   'blocklist': [],
         \ })

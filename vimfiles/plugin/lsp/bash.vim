@@ -1,11 +1,10 @@
-if executable('bash-language-server')
+let s:cmd = 'bash-language-server'
+if executable(s:cmd)
     augroup LspBash
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
         \   'name': 'ls-bash',
-        \   'cmd': {
-        \       server_info->[&shell, &shellcmdflag, 'bash-language-server start']
-        \   },
+        \   'cmd': {server_info -> [&shell, &shellcmdflag, s:cmd .. ' start']},
         \   'allowlist': ['sh'],
         \   'blocklist': [],
         \   'config': {},

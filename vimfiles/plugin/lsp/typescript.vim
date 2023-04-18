@@ -122,23 +122,32 @@ function! s:handle_callback(ctx, data) abort
     endif
 endfunction
 
-if executable('typescript-language-server')
+let s:cmd = 'typescript-language-server'
+if executable(s:cmd)
     augroup LspTypescript
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
         \   'name': 'ls-typescript',
-        \   'cmd': {
-        \       server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']
-        \   },
-        \   'allowlist': ['typescript', 'typescript.jsx', 'typescriptreact'],
+        \   'cmd': {server_info -> [&shell, &shellcmdflag, s:cmd .. ' --stdio']},
+        \   'allowlist': ['typescript', 'typescript.tsx', 'typescriptreact'],
         \   'blocklist': [],
-        \   'root_uri':{
-        \       server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))
+        \   'workspace_config': {},
+        \   'config': {},
+        \   'root_uri': {server_info ->
+        \       lsp#utils#path_to_uri(
+        \           lsp#utils#find_nearest_parent_file_directory(
+        \               lsp#utils#get_buffer_path(), 'tsconfig.json'
+        \           )
+        \       )
         \   },
+        \   'initialization_options': {
+        \       'diagnostics': 'true',
+        \   },
+        \   'languageId': {server_info -> 'typescript'},
         \ })
 
         autocmd FileType typescript,typescript.tsx,typescriptreact setlocal omnifunc=lsp#complete
-        nmap <A-]> :call <SID>lsp_go_to_source_definition()<CR>
+        autocmd FileType typescript,typescript.tsx,typescriptreact nmap <A-]> :call <SID>lsp_go_to_source_definition()<CR>
     augroup end
 else
     function! s:echo(msg)
@@ -148,11 +157,3 @@ else
     endfunction
     autocmd FileType typescript,typescript.tsx,typescriptreact call s:echo('Sorry, `typescript-language-server` is not installed. Please uses `npm install -g typescript typescript-language-server` to install.')
 endif
-
-"augroup lsp_folding
-"autocmd!
-"autocmd FileType typescript setlocal
-"    \ foldmethod=expr
-"    \ foldexpr=lsp#ui#vim#folding#foldexpr()
-"    \ foldtext=lsp#ui#vim#folding#foldtext()
-"augroup end

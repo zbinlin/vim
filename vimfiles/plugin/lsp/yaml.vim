@@ -1,11 +1,10 @@
-if executable('yaml-language-server')
+let s:cmd = 'yaml-language-server'
+if executable(s:cmd)
     augroup LspYaml
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
         \   'name': 'ls-yaml',
-        \   'cmd': {
-        \       server_info->['yaml-language-server', '--stdio']
-        \   },
+        \   'cmd': {server_info -> [&shell, &shellcmdflag, s:cmd .. ' --stdio']},
         \   'allowlist': ['yaml', 'yaml.ansible'],
         \   'blocklist': [],
         \   'workspace_config': {
@@ -20,7 +19,9 @@ if executable('yaml-language-server')
         \           },
         \       },
         \   },
+        \   'languageId': {server_info -> 'yaml'},
         \ })
+
         autocmd FileType yaml setlocal omnifunc=lsp#complete
     augroup end
 else

@@ -3,12 +3,14 @@ if executable('ccls')
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
         \   'name': 'ls-c',
-        \   'cmd': {
-        \       server_info->['ccls']
+        \   'cmd': {server_info -> ['ccls']},
+        \   'root_uri': {server_info ->
+        \       lsp#utils#path_to_uri(
+        \           lsp#utils#find_nearest_parent_file_directory(
+        \               lsp#utils#get_buffer_path(), ['.ccls', 'compile_commands.json']
+        \           )
+        \       )
         \   },
-		\   'root_uri': {
-		\       server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))
-		\   },
 		\   'initialization_options': {'cache': {'directory': expand('~/.cache/ccls') }},
         \   'allowlist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
         \   'blocklist': [],
@@ -23,9 +25,7 @@ elseif executable('clangd')
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
         \   'name': 'ls-c',
-        \   'cmd': {
-        \       server_info->['clangd', '-background-index']
-        \   },
+        \   'cmd': {server_info -> ['clangd', '-background-index']},
         \   'allowlist': ['c', 'cpp', 'objc', 'objcpp'],
         \   'blocklist': [],
         \   'config': {},

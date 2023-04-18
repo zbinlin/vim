@@ -1,18 +1,17 @@
-if executable('gopls')
+let s:cmd = 'gopls'
+if executable(s:cmd)
     augroup LspGo
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
         \   'name': 'ls-go',
-        \   'cmd': {
-        \       server_info->['gopls', '-remote=auto']
-        \   },
+        \   'cmd': {server_info -> [&shell, &shellcmdflag, s:cmd .. '-remote=auto']},
         \   'allowlist': ['go'],
         \   'blocklist': [],
         \   'config': {},
         \   'workspace_config': {},
         \ })
 
-		  autocmd BufWritePre *.go LspDocumentFormatSync
+        autocmd BufWritePre *.go LspDocumentFormatSync
         autocmd FileType go setlocal omnifunc=lsp#complete
     augroup end
 else
