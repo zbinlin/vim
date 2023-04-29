@@ -19,11 +19,8 @@ if executable(s:cmd)
         \   'initialization_options': {
         \       'diagnostics': 'true',
         \   },
-        \   'languageId': {server_info -> 'javascript'},
         \ })
-
-        autocmd FileType javascript,javascript.jsx,javascriptreact setlocal omnifunc=lsp#complete
-    augroup end
+    augroup END
 else
     function! s:echo(msg)
         echohl WarningMsg

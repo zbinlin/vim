@@ -131,7 +131,11 @@ if executable(s:cmd)
         \   'cmd': {server_info -> [&shell, &shellcmdflag, s:cmd .. ' --stdio']},
         \   'allowlist': ['typescript', 'typescript.tsx', 'typescriptreact'],
         \   'blocklist': [],
-        \   'workspace_config': {},
+        \   'workspace_config': {
+        \       'completions': {
+        \           'completeFunctionCalls': v:true,
+        \       },
+        \   },
         \   'config': {},
         \   'root_uri': {server_info ->
         \       lsp#utils#path_to_uri(
@@ -143,12 +147,10 @@ if executable(s:cmd)
         \   'initialization_options': {
         \       'diagnostics': 'true',
         \   },
-        \   'languageId': {server_info -> 'typescript'},
         \ })
 
-        autocmd FileType typescript,typescript.tsx,typescriptreact setlocal omnifunc=lsp#complete
         autocmd FileType typescript,typescript.tsx,typescriptreact nmap <A-]> :call <SID>lsp_go_to_source_definition()<CR>
-    augroup end
+    augroup END
 else
     function! s:echo(msg)
         echohl WarningMsg

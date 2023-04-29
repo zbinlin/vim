@@ -587,47 +587,61 @@ vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
 
-inoremap j <C-R>=pumvisible() ? "\<lt>C-N>" : "j"<CR>
-inoremap <C-j> <C-R>=pumvisible() ? "\<lt>C-N>" : "\<lt>C-j>"<CR>
-inoremap k <C-R>=pumvisible() ? "\<lt>C-P>" : "k"<CR>
-inoremap <C-k> <C-R>=pumvisible() ? "\<lt>C-P>" : "\<lt>C-k>"<CR>
+inoremap <expr> j pumvisible() ? '<C-N>' : 'j'
+inoremap <expr> <C-j> pumvisible() ? '<C-N>' : '<C-j>'
+inoremap <expr> k pumvisible() ? '<C-P>' : 'k'
+inoremap <expr> <C-k> pumvisible() ? '<C-P>' : '<C-k>'
 
-"inoremap <Esc> <C-R>=pumvisible() ? "\<lt>C-E>" : "\<lt>Esc>"<CR>
-inoremap <CR> <C-R>=pumvisible() ? "\<lt>C-Y>" : "\<lt>CR>"<CR>
-
-" 移到前面的 { 后面，用在 js/ts 里 import 或 destructuring assignment
-"inoremap <C-b>{ <C-o>T{<Space>
-"inoremap <C-b>[ <C-o>T[<Space>
-"inoremap <C-b>( <C-o>T(<Space>
-inoremap <C-b> <C-R>=search("[{[(]", "bes", line(".")) > 0 ? "\<lt>Right> " : ""<CR>
+"inoremap <expr> <Esc> pumvisible() ? '<C-E>' : '<Esc>'
+inoremap <expr> <CR> pumvisible() ? '<C-Y>' : '<CR>'
 
 " set popup menu size
 set pumwidth=15
 set pumheight=20
 
 
-nnoremap <silent> K :LspHover<CR>
-nnoremap <silent> <C-]> :LspDefinition<CR>
-nnoremap <silent> <C-}> :LspDeclaration<CR>
-nnoremap <silent> <F3> :LspNextReference<CR>
-nnoremap <silent> <S-F3> :LspPreviousReference<CR>
-nnoremap <silent> <F2> :LspRename<CR>
+" 移到前面的 { 后面，用在 js/ts 里 import 或 destructuring assignment
+"inoremap <C-b>{ <C-o>T{<Space>
+"inoremap <C-b>[ <C-o>T[<Space>
+"inoremap <C-b>( <C-o>T(<Space>
+inoremap <C-b> <C-r>=search('[{[(]', 'bes', line('.')) > 0 ? "\<lt>Right> " : ''<CR>
 
+
+let g:lsp_use_native_client = 1
 let g:lsp_signs_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_diagnostics_echo_delay = 200
-let g:lsp_diagnostics_float_cursor = 0
-let g:lsp_diagnostics_float_delay = 2000
-let g:lsp_preview_doubletap = 0
+let g:lsp_diagnostics_float_cursor = 1
+let g:lsp_diagnostics_float_delay = 500
+let g:lsp_diagnostics_float_insert_mode_enabled = 0
+"let g:lsp_preview_doubletap = 0
 let g:lsp_fold_enabled = 0
 let g:lsp_preview_autoclose = 0
 let g:lsp_highlight_references_enabled = 1
 let g:lsp_document_code_action_signs_enabled = 0
 let g:lsp_diagnostics_virtual_text_enabled = 0
+"let g:lsp_preview_autoclose = 0
+"let g:lsp_semantic_enabled = 1
 
 " Close preview window with <esc>
 autocmd User lsp_float_opened nmap <buffer> <silent> <esc> <Plug>(lsp-preview-close)
 autocmd User lsp_float_closed silent! nunmap <buffer> <esc>
+
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    autocmd BufWritePre *.go LspDocumentFormatSync
+    nmap <buffer><silent> K      :LspHover<CR>
+    nmap <buffer><silent> <C-]>  <plug>(lsp-definition)
+    nmap <buffer><silent> <C-}>  <plug>(lsp-declaration)
+    nmap <buffer><silent> <F3>   <plug>(lsp-next-reference)
+    nmap <buffer><silent> <S-F3> <plug>(lsp-previous-reference)
+    nmap <buffer><silent> <F2>   <plug>(lsp-rename)
+endfunction
+
+augroup lsp_install
+    au!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
 
 
 let g:typescript_indent_disable = 1
@@ -646,6 +660,8 @@ inoremap <expr> > <SID>has_close_parenthesis('>') ? '<Right>' : '>'
 inoremap <expr> ' <SID>has_close_parenthesis("'") ? '<Right>' : "'"
 inoremap <expr> " <SID>has_close_parenthesis('"') ? '<Right>' : '"'
 inoremap <expr> ` <SID>has_close_parenthesis('`') ? '<Right>' : '`'
+inoremap <expr> ; <SID>has_close_parenthesis(';') ? '<Right>' : ';'
+inoremap <expr> , <SID>has_close_parenthesis(',') ? '<Right>' : ','
 
 " Fix the key remap by after loaded script
 function! s:patch_map()

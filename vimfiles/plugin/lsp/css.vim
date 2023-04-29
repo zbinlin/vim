@@ -42,9 +42,7 @@ if !empty(s:cmd)
         \       },
         \   },
         \ })
-
-        autocmd FileType css,less,sass setlocal omnifunc=lsp#complete
-    augroup end
+    augroup END
 else
     function! s:echo(msg)
         echohl WarningMsg

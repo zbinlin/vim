@@ -10,9 +10,7 @@ if executable(s:cmd)
         \   'config': {},
         \   'workspace_config': {},
         \ })
-
-        autocmd FileType sh setlocal omnifunc=lsp#complete
-    augroup end
+    augroup END
 else
     function! s:echo(msg)
         echohl WarningMsg

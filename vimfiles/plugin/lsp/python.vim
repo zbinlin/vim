@@ -8,9 +8,7 @@ if executable(s:cmd)
         \   'allowlist': ['python'],
         \   'blocklist': [],
         \ })
-
-        autocmd FileType python setlocal omnifunc=lsp#complete
-    augroup end
+    augroup END
 else
     function! s:echo(msg)
         echohl WarningMsg

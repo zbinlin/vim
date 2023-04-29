@@ -17,9 +17,7 @@ if executable('ccls')
         \   'config': {},
         \   'workspace_config': {},
         \ })
-
-        autocmd FileType c,cpp,objc,objcpp,cc setlocal omnifunc=lsp#complete
-    augroup end
+    augroup END
 elseif executable('clangd')
     augroup LspC
         autocmd!
@@ -31,9 +29,7 @@ elseif executable('clangd')
         \   'config': {},
         \   'workspace_config': {},
         \ })
-
-        autocmd FileType c,cpp,objc,objcpp setlocal omnifunc=lsp#complete
-    augroup end
+    augroup END
 else
     function! s:echo(msg)
         echohl WarningMsg

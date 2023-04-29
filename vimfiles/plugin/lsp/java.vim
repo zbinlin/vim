@@ -35,9 +35,7 @@ if executable('java') && filereadable(s:jdtls_launcher_path)
         \       lsp#utils#path_to_uri(s:get_root_path_by(server_info))
         \   },
         \ })
-
-        autocmd FileType java setlocal omnifunc=lsp#complete
-    augroup end
+    augroup END
 else
     function! s:echo(msg)
         echohl WarningMsg

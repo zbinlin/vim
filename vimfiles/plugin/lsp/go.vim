@@ -10,10 +10,7 @@ if executable(s:cmd)
         \   'config': {},
         \   'workspace_config': {},
         \ })
-
-        autocmd BufWritePre *.go LspDocumentFormatSync
-        autocmd FileType go setlocal omnifunc=lsp#complete
-    augroup end
+    augroup END
 else
     function! s:echo(msg)
         echohl WarningMsg

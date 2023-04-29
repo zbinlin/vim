@@ -15,14 +15,12 @@ if executable(s:cmd)
         \       },
         \   },
         \ })
-
-        autocmd FileType rust setlocal omnifunc=lsp#complete
-    augroup end
+    augroup END
 else
     function! s:echo(msg)
         echohl WarningMsg
         echom a:msg
         echohl NONE
     endfunction
-    autocmd FileType rust call s:echo('Sorry, `rust-analyzer` is not installed. Please Uses `rustup update && rustup component add rust-analyzer rust-src` or `sudo pacman -Sy rust-analyzer && rustup update && rustup component add rust-src` to install.')
+    autocmd FileType rust call s:echo('Sorry, `rust-analyzer` is not installed. Please Uses `pacman -Sy rustup && rustup update && rustup component add rust-src` to install.')
 endif

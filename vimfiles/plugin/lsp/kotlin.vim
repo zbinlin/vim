@@ -17,9 +17,7 @@ if executable(s:cmd)
         \       )
         \   },
         \ })
-
-        autocmd FileType kotlin setlocal omnifunc=lsp#complete
-    augroup end
+    augroup END
 else
     function! s:echo(msg)
         echohl WarningMsg

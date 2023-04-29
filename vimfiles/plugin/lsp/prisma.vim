@@ -20,10 +20,7 @@ if executable(s:cmd)
         \       'diagnostics': 'true',
         \   },
         \ })
-
-        let g:lsp_semantic_enabled = 1
-        autocmd FileType prisma setlocal omnifunc=lsp#complete
-    augroup end
+    augroup END
 else
     function! s:echo(msg)
         echohl WarningMsg

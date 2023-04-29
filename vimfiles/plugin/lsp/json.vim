@@ -41,9 +41,7 @@ if !empty(s:cmd)
         \       },
         \   },
         \ })
-
-        autocmd FileType json,jsonc setlocal omnifunc=lsp#complete
-    augroup end
+    augroup END
 else
     function! s:echo(msg)
         echohl WarningMsg
