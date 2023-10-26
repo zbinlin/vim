@@ -4,7 +4,7 @@ if executable(s:cmd)
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
         \   'name': 'ls-go',
-        \   'cmd': {server_info -> [&shell, &shellcmdflag, s:cmd .. '-remote=auto']},
+        \   'cmd': {server_info -> [&shell, &shellcmdflag, s:cmd .. ' -remote=auto']},
         \   'allowlist': ['go'],
         \   'blocklist': [],
         \   'config': {},

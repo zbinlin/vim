@@ -8,10 +8,15 @@ if executable(s:cmd)
         \   'allowlist': ['rust'],
         \   'blocklist': [],
         \   'initialization_options': {
-        \       'checkOnSave': v:false,
+        \       'checkOnSave': v:true,
         \       'cargo': {
         \       },
         \       'procMacro': {
+        \       },
+        \       'diagnostics': {
+        \           'experimental': {
+        \               'enable': v:true,
+        \           },
         \       },
         \   },
         \ })
@@ -22,5 +27,5 @@ else
         echom a:msg
         echohl NONE
     endfunction
-    autocmd FileType rust call s:echo('Sorry, `rust-analyzer` is not installed. Please Uses `pacman -Sy rustup && rustup update && rustup component add rust-src` to install.')
+    autocmd FileType rust call s:echo('Sorry, `rust-analyzer` is not installed. Please Uses `pacman -Sy rustup && rustup update && rustup component add rust-analyzer rust-src` to install.')
 endif
