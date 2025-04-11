@@ -436,7 +436,7 @@ let g:indent_guides_guide_size = 1
 
 " 在当前光标下插入日期（格式：1997-01-01 00:00:00，插入模式）
 " <C-r>=strftime("%Y-%m-%d %T")
-" <C-r>=strftime("%Y-%M-%dT%T+08:00")
+" <C-r>=strftime("%Y-%m-%dT%T+08:00")
 " ISO8601/W3C Format
 " <C-r>=strftime("%FT%T%z")
 
