@@ -24,7 +24,15 @@ elseif executable('clangd')
         autocmd User lsp_setup call lsp#register_server({
         \   'name': 'ls-c',
         \   'cmd': {server_info -> ['clangd', '-background-index']},
-        \   'allowlist': ['c', 'cpp', 'objc', 'objcpp'],
+        \   'root_uri': {server_info ->
+        \       lsp#utils#path_to_uri(
+        \           lsp#utils#find_nearest_parent_file_directory(
+        \               lsp#utils#get_buffer_path(), ['.clangd', 'compile_commands.json']
+        \           )
+        \       )
+        \   },
+		\   'initialization_options': {},
+        \   'allowlist': ['c', 'cpp', 'objc', 'objcpp', 'cuda'],
         \   'blocklist': [],
         \   'config': {},
         \   'workspace_config': {},
