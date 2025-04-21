@@ -606,40 +606,41 @@ set pumheight=20
 "inoremap <C-b>( <C-o>T(<Space>
 inoremap <C-b> <C-r>=search('[{[(]', 'bes', line('.')) > 0 ? "\<lt>Right> " : ''<CR>
 
-
-let g:lsp_use_native_client = 1
-let g:lsp_signs_enabled = 1
-let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_diagnostics_echo_delay = 200
-let g:lsp_diagnostics_float_cursor = 1
-let g:lsp_diagnostics_float_delay = 500
-let g:lsp_diagnostics_float_insert_mode_enabled = 0
-"let g:lsp_preview_doubletap = 0
-let g:lsp_fold_enabled = 0
-let g:lsp_preview_autoclose = 0
-let g:lsp_highlight_references_enabled = 1
-let g:lsp_document_code_action_signs_enabled = 0
-let g:lsp_diagnostics_virtual_text_enabled = 0
-"let g:lsp_preview_autoclose = 0
-"let g:lsp_semantic_enabled = 1
-
-" Close preview window with <esc>
-autocmd User lsp_float_opened nmap <buffer> <silent> <esc> <Plug>(lsp-preview-close)
-autocmd User lsp_float_closed silent! nunmap <buffer> <esc>
-
-function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    autocmd BufWritePre *.go LspDocumentFormatSync
-    nmap <buffer><silent> K      :LspHover<CR>
-    nmap <buffer><silent> <C-]>  <plug>(lsp-definition)
-    nmap <buffer><silent> <C-}>  <plug>(lsp-declaration)
-    nmap <buffer><silent> <F3>   <plug>(lsp-next-reference)
-    nmap <buffer><silent> <S-F3> <plug>(lsp-previous-reference)
-    nmap <buffer><silent> <F2>   <plug>(lsp-rename)
-endfunction
-
 augroup lsp_install
     au!
+
+    let g:lsp_async_completion = v:true
+    let g:lsp_use_native_client = 1
+    let g:lsp_signs_enabled = 1
+    let g:lsp_diagnostics_echo_cursor = 1
+    let g:lsp_diagnostics_echo_delay = 200
+    let g:lsp_diagnostics_float_cursor = 1
+    let g:lsp_diagnostics_float_delay = 500
+    let g:lsp_diagnostics_float_insert_mode_enabled = 0
+    "let g:lsp_preview_doubletap = 0
+    let g:lsp_fold_enabled = 0
+    let g:lsp_preview_autoclose = 0
+    let g:lsp_highlight_references_enabled = 1
+    let g:lsp_document_code_action_signs_enabled = 0
+    let g:lsp_diagnostics_virtual_text_enabled = 0
+    "let g:lsp_preview_autoclose = 0
+    "let g:lsp_semantic_enabled = 1
+
+    " Close preview window with <esc>
+    autocmd User lsp_float_opened nmap <buffer> <silent> <esc> <Plug>(lsp-preview-close)
+    autocmd User lsp_float_closed silent! nunmap <buffer> <esc>
+
+    function! s:on_lsp_buffer_enabled() abort
+        setlocal omnifunc=lsp#complete
+        autocmd BufWritePre *.go LspDocumentFormatSync
+        nmap <buffer><silent> K      :LspHover<CR>
+        nmap <buffer><silent> <C-]>  <plug>(lsp-definition)
+        nmap <buffer><silent> <C-}>  <plug>(lsp-declaration)
+        nmap <buffer><silent> <F3>   <plug>(lsp-next-reference)
+        nmap <buffer><silent> <S-F3> <plug>(lsp-previous-reference)
+        nmap <buffer><silent> <F2>   <plug>(lsp-rename)
+    endfunction
+
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
