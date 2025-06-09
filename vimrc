@@ -419,9 +419,76 @@ endif
 " 复制高亮行到新建文件
 nnoremap <silent><leader>gp :let @p=@_<CR>:g/<C-R>//y P<CR>:new<CR>pdk yG
 
-" move selection to save
-:command! -bang -range -nargs=1 -complete=file MoveWrite  <line1>,<line2>write<bang> <args> | <line1>,<line2>delete _
-:command! -bang -range -nargs=1 -complete=file MoveAppend <line1>,<line2>write<bang> >> <args> | <line1>,<line2>delete _
+
+" DESCRIPTION:
+" A function and set of commands to save or cut a visual block selection
+" to an external file, with support for appending and overwrite protection.
+function! s:HandleBlockToFile(action, bang, filename)
+  let l:write_mode = 'w'
+  let l:real_filename = a:filename
+  let l:action_string_present = 'saved to'
+  let l:action_string_past = 'Saved'
+
+  " Handle 'cut' action
+  if a:action == 'cut'
+    let l:action_string_present = 'cut to'
+  endif
+
+  " Handle '>>' append mode
+  if l:real_filename =~# '^>>\s*'
+    let l:write_mode = 'a'
+    let l:real_filename = substitute(l:real_filename, '^>>\s*', '', '')
+    let l:action_string_present = 'appended to'
+
+    if l:real_filename == ''
+      echohl ErrorMsg | echo "Error: Filename missing after '>>'" | echohl None
+      return 0 " Return failure
+    endif
+  endif
+
+  " Check for overwrite, but only if NOT in append mode
+  if l:write_mode == 'w' && filereadable(l:real_filename) && a:bang != '!'
+    let l:choice = confirm("'" . l:real_filename . "' already exists. Overwrite?", "&Yes\n&No", 2)
+    if l:choice != 1
+      echohl WarningMsg | echo "Action cancelled." | echohl None
+      return 0 " Return failure
+    endif
+  endif
+
+  try
+    " Preserve the user's current yank register
+    let l:reg_contents = getreg('"')
+    let l:reg_type = getregtype('"')
+
+    " Yank the visually selected text
+    normal! gvy
+
+    " Write the contents of the yank register to the specified file
+    call writefile(split(getreg('"'), '\n'), l:real_filename, l:write_mode)
+
+    " Restore the user's yank register
+    call setreg('"', l:reg_contents, l:reg_type)
+
+    " Provide feedback to the user
+    echo "Visual block " . l:action_string_present . " " . l:real_filename
+    return 1 " Return success
+  catch
+    " Handle potential errors
+    echohl ErrorMsg
+    echo "Error: Could not perform action on " . l:real_filename
+    echohl None
+    return 0 " Return failure
+  endtry
+endfunction
+
+" To SAVE a block (Copy selection to file)
+command! -bang -range -nargs=1 -complete=file SaveVisualBlock
+      \ :call s:HandleBlockToFile('save', <q-bang>, <q-args>)
+
+" To CUT a block (Move selection to file)
+command! -bang -range -nargs=1 -complete=file CutVisualBlock
+      \ :if s:HandleBlockToFile('cut', <q-bang>, <q-args>) | execute "normal! gvd" | endif
+
 
 
 " set Indent Guides
