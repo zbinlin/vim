@@ -421,73 +421,160 @@ nnoremap <silent><leader>gp :let @p=@_<CR>:g/<C-R>//y P<CR>:new<CR>pdk yG
 
 
 " DESCRIPTION:
-" A function and set of commands to save or cut a visual block selection
-" to an external file, with support for appending and overwrite protection.
-function! s:HandleBlockToFile(action, bang, filename)
+" 核心辅助函数：将列表内容写入文件
+" 处理 '>>' 追加模式和覆盖保护
+function! s:WriteContentToFile(content_list, filename, bang, action_desc)
   let l:write_mode = 'w'
   let l:real_filename = a:filename
-  let l:action_string_present = 'saved to'
-  let l:action_string_past = 'Saved'
+  let l:action_msg = a:action_desc
 
-  " Handle 'cut' action
-  if a:action == 'cut'
-    let l:action_string_present = 'cut to'
-  endif
-
-  " Handle '>>' append mode
+  " 处理 '>>' 追加模式
   if l:real_filename =~# '^>>\s*'
     let l:write_mode = 'a'
     let l:real_filename = substitute(l:real_filename, '^>>\s*', '', '')
-    let l:action_string_present = 'appended to'
+    let l:action_msg = 'appended to'
 
     if l:real_filename == ''
       echohl ErrorMsg | echo "Error: Filename missing after '>>'" | echohl None
-      return 0 " Return failure
+      return 0
     endif
   endif
 
-  " Check for overwrite, but only if NOT in append mode
+  " 检查覆盖 (仅在非追加模式且没有使用 ! 强制时)
   if l:write_mode == 'w' && filereadable(l:real_filename) && a:bang != '!'
     let l:choice = confirm("'" . l:real_filename . "' already exists. Overwrite?", "&Yes\n&No", 2)
     if l:choice != 1
       echohl WarningMsg | echo "Action cancelled." | echohl None
-      return 0 " Return failure
+      return 0
     endif
   endif
 
   try
-    " Preserve the user's current yank register
-    let l:reg_contents = getreg('"')
-    let l:reg_type = getregtype('"')
-
-    " Yank the visually selected text
-    normal! gvy
-
-    " Write the contents of the yank register to the specified file
-    call writefile(split(getreg('"'), '\n'), l:real_filename, l:write_mode)
-
-    " Restore the user's yank register
-    call setreg('"', l:reg_contents, l:reg_type)
-
-    " Provide feedback to the user
-    echo "Visual block " . l:action_string_present . " " . l:real_filename
-    return 1 " Return success
+    " 写入文件
+    call writefile(a:content_list, l:real_filename, l:write_mode)
+    echo "Content " . l:action_msg . " " . l:real_filename
+    return 1
   catch
-    " Handle potential errors
     echohl ErrorMsg
-    echo "Error: Could not perform action on " . l:real_filename
+    echo "Error: Could not write to " . l:real_filename
     echohl None
-    return 0 " Return failure
+    return 0
   endtry
 endfunction
 
-" To SAVE a block (Copy selection to file)
+" ---------------------------------------------------------
+" 1. 处理 Visual Block (选区)
+" ---------------------------------------------------------
+function! s:HandleBlockToFile(action, bang, filename)
+  " 准备动作描述
+  let l:desc = (a:action == 'cut') ? 'cut to' : 'saved to'
+
+  try
+    " 保存当前的寄存器内容
+    let l:reg_contents = getreg('"')
+    let l:reg_type = getregtype('"')
+
+    " 复制选中的文本
+    normal! gvy
+
+    " 获取复制的内容并转换为列表
+    let l:content = split(getreg('"'), '\n')
+
+    " 调用核心写入函数
+    let l:success = s:WriteContentToFile(l:content, a:filename, a:bang, l:desc)
+
+    " 恢复寄存器
+    call setreg('"', l:reg_contents, l:reg_type)
+
+    return l:success
+  catch
+    return 0
+  endtry
+endfunction
+
+" ---------------------------------------------------------
+" 2. 处理 Search Matches (搜索高亮)
+" ---------------------------------------------------------
+function! s:HandleSearchToFile(action, bang, filename)
+  let l:pattern = @/
+  if empty(l:pattern)
+    echohl ErrorMsg | echo "Error: No search pattern set." | echohl None
+    return 0
+  endif
+
+  let l:matches = []
+
+  " --- 性能优化开始: 使用临时缓冲区处理大量数据 ---
+
+  " 1. 获取当前 buffer 的所有行
+  let l:lines = getline(1, '$')
+
+  " 2. 创建一个新的临时缓冲区 (new scratch buffer)
+  " nofile: 不关联文件, bufhidden=wipe: 退出即删除, noswapfile: 无交换文件
+  new
+  setlocal buftype=nofile bufhidden=wipe noswapfile
+
+  " 3. 将内容粘贴进来
+  call setline(1, l:lines)
+
+  try
+    " 4. 核心魔法：
+    " 第一步：将所有匹配项替换为 "换行符+匹配项+换行符"
+    " 这样可以将一行内的多个匹配项拆分到不同行
+    " 使用 silent! 忽略未找到的错误 (虽然理论上不应该发生)
+    silent! execute '%s//\r&\r/g'
+
+    " 第二步：删除所有不包含匹配项的行 (v命令)
+    " 注意：这里必须重新把 @/ 传进去，或者使用 //
+    silent! execute 'v//d'
+
+    " 第三步：清理可能产生的空行 (如果匹配项本身就是换行符则会有误伤，但通常搜索是文本)
+    silent! execute 'g/^$/d'
+
+    " 5. 获取处理后的所有行 (即所有的匹配项)
+    let l:matches = getline(1, '$')
+  finally
+    " 6. 无论成功与否，关闭临时缓冲区
+    bwipeout!
+  endtry
+  " --- 性能优化结束 ---
+
+  if empty(l:matches)
+    echo "No matches found for pattern: " . l:pattern
+    return 0
+  endif
+
+  let l:desc = (a:action == 'cut') ? 'matches cut to' : 'matches saved to'
+
+  " 调用核心写入函数
+  if s:WriteContentToFile(l:matches, a:filename, a:bang, l:desc)
+    " 如果是剪切操作，在原 Buffer 中执行删除
+    if a:action == 'cut'
+      " 全局替换为空字符串 (这也是C底层操作，速度很快)
+      execute '%s//'
+    endif
+    return 1
+  endif
+  return 0
+endfunction
+
+" =========================================================
+" 命令定义
+" =========================================================
+
+" 1. 选区操作
 command! -bang -range -nargs=1 -complete=file SaveVisualBlock
       \ :call s:HandleBlockToFile('save', <q-bang>, <q-args>)
 
-" To CUT a block (Move selection to file)
 command! -bang -range -nargs=1 -complete=file CutVisualBlock
       \ :if s:HandleBlockToFile('cut', <q-bang>, <q-args>) | execute "normal! gvd" | endif
+
+" 2. 搜索结果操作 (新增)
+command! -bang -nargs=1 -complete=file SaveSearchMatches
+      \ :call s:HandleSearchToFile('save', <q-bang>, <q-args>)
+
+command! -bang -nargs=1 -complete=file CutSearchMatches
+      \ :call s:HandleSearchToFile('cut', <q-bang>, <q-args>)
 
 
 
@@ -676,18 +763,19 @@ inoremap <C-b> <C-r>=search('[{[(]', 'bes', line('.')) > 0 ? "\<lt>Right> " : ''
 augroup lsp_install
     au!
 
+    set updatetime=10000
     let g:lsp_async_completion = v:true
     let g:lsp_use_native_client = 1
     let g:lsp_signs_enabled = 1
     let g:lsp_diagnostics_echo_cursor = 1
-    let g:lsp_diagnostics_echo_delay = 200
+    let g:lsp_diagnostics_echo_delay = 500
     let g:lsp_diagnostics_float_cursor = 1
     let g:lsp_diagnostics_float_delay = 500
     let g:lsp_diagnostics_float_insert_mode_enabled = 0
     "let g:lsp_preview_doubletap = 0
     let g:lsp_fold_enabled = 0
     let g:lsp_preview_autoclose = 0
-    let g:lsp_highlight_references_enabled = 1
+    "let g:lsp_document_highlight_enabled = 0
     let g:lsp_document_code_action_signs_enabled = 0
     let g:lsp_diagnostics_virtual_text_enabled = 0
     "let g:lsp_preview_autoclose = 0
